@@ -78,17 +78,15 @@ class SeqShortextClassifcation(object):
     self.utterance_filter_sizes = [3, 4, 5]
     self.utterance_num_filter = 8
     self.session_filter_sizes = [2, 3]
-
     self.session_num_filters = 8
     self.use_crf = False
-
     self.num_checkpoint = 5
     self.evaluate_every = 100
     self.batch_size = 8
     self.num_epochs = 40
     self.checkpoint_every = 100
-
     self.build_model()
+
 
   def build_model(self):
     self.add_input()
@@ -179,10 +177,8 @@ class SeqShortextClassifcation(object):
                           initializer=tf.contrib.layers.xavier_initializer())
       layer2_W = tf.get_variable("layer2_W", shape=[self.num_classes, self.num_classes], dtype=tf.float32,
                           initializer=tf.contrib.layers.xavier_initializer())
-
       layer2_b = tf.get_variable("layer2_b", shape=[self.num_classes], dtype=tf.float32, initializer=tf.zeros_initializer())
 
-      # TODO: need to padding zero and remove the last row in minus 2 and minus 1 matrix.
       num_sess = self.input_x.shape[0]
       sess_mat_minus2 = tf.map_fn(lambda chat_sess: tf_shift_utts_in_session(chat_sess, num_shift_row=2, max_utterance_in_session=self.max_utterance_in_session),
                                   self.utterance_vector_group_by_sess)
